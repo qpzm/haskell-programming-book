@@ -28,7 +28,7 @@ instance Applicative (Either a) where
     Right f <*> x = fmap f x
 
 instance Foldable (Either a) where
-    -- fodlMap :: Monoid  m => (a -> m) -> t a -> m
+    -- foldMap :: Monoid  m => (a -> m) -> t a -> m
     foldMap _ (Left e) = mempty
     foldMap f (Right x) = f x
 
