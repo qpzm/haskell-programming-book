@@ -1,12 +1,11 @@
 module Main where
 
 import Control.Monad (forever, when)
-import Data.List (intercalate)
 import Data.Traversable (traverse)
 import Morse (stringToMorse, morseToChar)
 import System.Environment (getArgs)
 import System.Exit (exitFailure, exitSuccess)
-import System.IO (hGetLine, hIsEOF, stdin)
+import System.IO (getLine, hIsEOF, stdin)
 
 convertToMorse :: IO ()
 convertToMorse = forever $ do
@@ -18,7 +17,7 @@ convertToMorse = forever $ do
             convertLine line = do
                 let morse = stringToMorse line
                 case morse of
-                  (Just str) -> putStrLn (intercalate " " str)
+                  (Just str) -> putStrLn (unwords str)
                   Nothing -> do putStrLn $ "ERROR: " ++ line; exitFailure
 
 convertFromMorse :: IO ()

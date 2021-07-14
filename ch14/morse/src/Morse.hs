@@ -55,6 +55,9 @@ letterToMorse = M.fromList
 -- Note!
 -- M.foldrWithKey :: (k -> a -> b -> b) -> b -> M.Map k a -> b
 -- M.insert :: Ord k => k -> a -> M.Map k a -> M.Map k a
+--
+-- flip changes the first two parameters and return a function
+-- flip M.insert :: Ord k => a -> k -> (M.Map k a -> M.Map k a)
 morseToLetter :: M.Map Morse Char
 morseToLetter = M.foldrWithKey (flip M.insert) M.empty letterToMorse
 

@@ -16,6 +16,9 @@ charGen = elements allowedChars
 morseGen :: Gen Morse
 morseGen = elements allowedMorse
 
+-- forAll :: (Show a, Testable prop) => Gen a -> (a -> prop) -> Property
+-- Instances of Testable
+-- Testable Bool
 prop_thereAndBackAgain :: Property
 prop_thereAndBackAgain =
     forAll charGen
