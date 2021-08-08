@@ -1,0 +1,44 @@
+name:                monoid
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/githubuser/monoid#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Author name here
+maintainer:          example@example.com
+copyright:           2021 Author name here
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+library
+  exposed-modules: Monoid
+  ghc-options: -Wall -fwarn-tabs
+  build-depends:        base >= 4.14.1.0
+                      , QuickCheck >= 2.0
+  hs-source-dirs: src
+  default-language: Haskell2010
+
+test-suite monoid
+  ghc-options: -Wall -fno-warn-orphans
+  type: exitcode-stdio-1.0
+  main-is: MonoidTest.hs
+  hs-source-dirs: tests
+  build-depends:       base >= 4.14.1.0
+                      , QuickCheck >= 2.0
+                      , hspec
+                      , monoid
+  default-language:    Haskell2010
+
+test-suite semigroup
+  ghc-options: -Wall -fno-warn-orphans
+  type: exitcode-stdio-1.0
+  main-is: Semigroup.hs
+  hs-source-dirs: tests
+  build-depends:       base >= 4.14.1.0
+                      , QuickCheck >= 2.0
+                      , hspec
+                      , monoid
+  default-language:    Haskell2010

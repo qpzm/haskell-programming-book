@@ -1,4 +1,4 @@
-module Main where
+module Semigroup where
 
 import Data.Monoid
 import Data.Semigroup
@@ -74,6 +74,7 @@ instance Arbitrary BoolConj where
     arbitrary = do
         a <- arbitrary
         return (BoolConj a)
+type BoolConjAssoc = BoolConj -> BoolConj -> BoolConj -> Bool
 
 -- BoolDisj : <> works like Or
 newtype BoolDisj = BoolDisj Bool deriving (Eq, Show)
@@ -83,6 +84,7 @@ instance Arbitrary BoolDisj where
     arbitrary = do
         a <- arbitrary
         return (BoolDisj a)
+type BoolDisjAssoc = BoolDisj -> BoolDisj -> BoolDisj -> Bool
 
 data Or a b = Fst a | Snd b deriving (Eq, Show)
 instance (Semigroup a, Semigroup b) => Semigroup (Or a b) where
@@ -126,40 +128,3 @@ instance Semigroup a => Semigroup (Validation a b) where
     (Success a) <> (Failure b) = Success a
     (Failure a) <> (Success b) = Success b
     (Failure a) <> (Failure b) = Failure (a <> b)
-
-main :: IO ()
-main = do
-    print "Check Semigroup"
-    quickCheck (semigroupAssoc :: TrivAssoc)
-    quickCheck (semigroupAssoc :: (IdentityAssoc String))
-    quickCheck (semigroupAssoc :: (TwoAssoc String (Sum Int)))
-    quickCheck (semigroupAssoc :: (ThreeAssoc String (Sum Int) (Product Int)))
-    quickCheck (semigroupAssoc :: (FourAssoc String (Sum Int) (Product Int) String))
-    quickCheck (semigroupAssoc :: (BoolConj -> BoolConj -> BoolConj -> Bool))
-    quickCheck (semigroupAssoc :: (BoolDisj -> BoolDisj -> BoolDisj -> Bool))
-    quickCheck (semigroupAssoc :: (OrAssoc String (Sum Int)))
-    -- TODO quickCheck Combine, Comp
-    -- quickCheck (semigroupAssoc :: CombAssoc)
-    checkCombine
-    checkValidation
-
-checkCombine :: IO ()
-checkCombine = do
-    let f = Combine $ \n -> Sum (n + 1)
-        g = Combine $ \n -> Sum (n - 1)
-    print $ unCombine (f <> g) 0 == (Sum 0 :: Sum Int)
-    print $ unCombine (f <> g) 1 == Sum 2
-    print $ unCombine (f <> f) 1 == Sum 4
-    print $ unCombine (g <> f) 1 == Sum 2
-
-
-checkValidation :: IO( )
-checkValidation = do
-    let failure :: String -> Validation String Int
-        failure = Failure
-        success :: Int -> Validation String Int
-        success = Success
-    print $ success 1 <> failure "blah"
-    print $ failure "woot" <> failure "blah"
-    print $ success 1 <> success 2
-    print $ failure "woot" <> success 2
