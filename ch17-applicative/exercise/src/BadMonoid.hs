@@ -5,7 +5,7 @@ module BadMonoid where
 import Data.Monoid
 import Test.QuickCheck
 import Test.QuickCheck.Checkers
-import "checkers" Test.QuickCheck.Classes
+import Test.QuickCheck.Classes
 
 data Bull = Fools | Twoo deriving (Eq, Show)
 
@@ -24,4 +24,7 @@ instance Monoid Bull where
 instance EqProp Bull where (=-=) = eq
 
 main :: IO ()
-main = quickBatch (monoid Twoo) -- Twoo 라는 값이 쓰이는 게 아니라 해당 Type 정보만 사용
+main = do
+    quickBatch (monoid Twoo) -- Twoo 라는 값이 쓰이는 게 아니라 해당 Type 정보만 사용
+    let xs = [("b", "w", 1)] :: [(String, String, Int)] in
+        quickBatch $ applicative xs
